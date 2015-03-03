@@ -5,7 +5,7 @@ The one below is a Bernoulli Naive Bayes model that takes a the file
 train_02032015.csv, and does NO text preprocessing, only direct
 binary count vectorization.
 
-The classification model expects the tweets to be classified as a list of 
+The classification model expects the tweets to be classified as a list of
 strings.
 '''
 
