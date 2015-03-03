@@ -23,16 +23,26 @@ class ClassificationModel():
         self.vectorizer = CountVectorizer(binary=True)
         self.model = BernoulliNB()
 
-    def prep_data(self, data):
-        "Expects data as list of strings, returns it prepped for self.predict"
-        return self.vectorizer.transform(np.array(data))
+    def fit(self, train_data, train_labels):
+        '''
+        Takes training data as a list of strings, training labels as
+        list of 1 or 0, and fits the model
+        '''
+        train_data_vectorized = self.vectorizer.fit_transform(train_data)
+        self.model.fit(train_data_vectorized, train_labels)
 
-    def fit(self, X, y):
-        X_vect = self.vectorizer.fit_transform(X)
-        self.model.fit(X_vect, y)
-
-    def predict(self, X_vect):
-        return self.model.predict(X_vect)
+    def predict(self, test_data):
+        '''
+        Takes test_data which is a list of strings and
+        returns a list [(test point, label)]
+        '''
+        # Preprocess text if needed
+        # Vectorize
+        test_data_vectorized = self.vectorizer.transform(test_data)
+        # Predict using saved model
+        labels = self.model.predict(test_data_vectorized)
+        # return list of (data point, label)
+        return zip(test_data, labels)
 
 
 def get_data(datafile):
