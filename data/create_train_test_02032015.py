@@ -4,10 +4,10 @@ train_with_target_and_femfreq_mentions_300_02032015.csv.
 The above csv has about 450 rows, and two columns: text and target.
 The column 'text' holds the text of the tweet, and 'target' holds
 1 if contains gendered harassment, 0 otherwise. Note that the first 157
-are identified by femfreq herself, while all others are hand classified by 
+are identified by femfreq herself, while all others are hand classified by
 anonymous.
 
-We use sklearn's train_test_split, random state = 1, 
+We use sklearn's train_test_split, random state = 1,
 and test set size of 20%.
 
 They are written to train_02032015.csv and test_02032015.csv.
