@@ -70,7 +70,7 @@ def predict_and_append_to_twitter_api_dump_json(tweets_dump, label_name,
     return apply_and_append_to_twitter_api_dump_json(
         tweets_dump, 
         label_name, [
-            tweet_processing.get_text_in_order_from_twitter_api_dump_json,
+            get_text_in_order_from_twitter_api_dump_json,
             predict_func,
             lambda y: map(lambda x: x[1], y)])
 
