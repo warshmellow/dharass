@@ -54,6 +54,13 @@ def get_data(datafile):
     return X, y
 
 
+def load_model(filename):
+    'Loads pickle in filename and returns the model'
+    with open(filename) as f:
+        model = pickle.load(f)
+    return model
+
+
 if __name__ == '__main__':
     X, y = get_data('data/train_02032015.csv')
     model = ClassificationModel()
