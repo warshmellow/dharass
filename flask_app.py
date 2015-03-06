@@ -41,11 +41,24 @@ def label_tweets():
     form_text_name = 'text'
     if request.headers['Content-Type'] == 'application/json':
         tweets_dump = request.json
+        # Predict using classification model
+        labeled_tweets_dump = tp.predict_and_append_to_twitter_api_dump_json(
+        tweets_dump, 'label', classification_model.predict)
+        # JSONify and return
+        resp = jsonify(labeled_tweets_dump)
+        resp.status_code = 200
+        return resp
 
     elif uploaded_file_name_value in request.files:
         uploaded_file = request.files[uploaded_file_name_value]
         if uploaded_file and allowed_file(uploaded_file.filename):
             tweets_dump = json.loads(uploaded_file.stream.read())
+            # Predict using classification model if JSON or Uploaded file
+            labeled_tweets_dump = tp.predict_and_append_to_twitter_api_dump_json(
+                tweets_dump, 'label', classification_model.predict)
+            # Pass data to table template and render
+            data = tp.get_info_from_twitter_api_dump_json(labeled_tweets_dump)
+            return render_template('table.html', data=data)
 
     # Return {text: label} JSON if Form
     elif form_text_name in request.form:
@@ -53,15 +66,6 @@ def label_tweets():
         resp = jsonify(classification_model.predict(texts))
         resp.status_code = 200
         return resp
-
-    # Predict using classification model if JSON or Uploaded file
-    labeled_tweets_dump = tp.predict_and_append_to_twitter_api_dump_json(
-        tweets_dump, 'label', classification_model.predict)
-
-    # Get JSON dump and return the response if JSON or Uploaded file
-    resp = jsonify(labeled_tweets_dump)
-    resp.status_code = 200
-    return resp
 
 
 if __name__ == '__main__':

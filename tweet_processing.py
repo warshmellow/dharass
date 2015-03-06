@@ -75,6 +75,17 @@ def predict_and_append_to_twitter_api_dump_json(tweets_dump, label_name,
             lambda y: map(lambda x: x[1], y)])
 
 
+def get_info_from_twitter_api_dump_json(tweets_dump):
+    'Returns screen name, text, and label if label exists'
+    names = [status['user']['screen_name'] for status in tweets_dump['statuses']]
+    texts = [status['text'] for status in tweets_dump['statuses']]
+
+    if 'label' in tweets_dump:
+        return zip(names, texts, tweets_dump['label'])
+    else:
+        return zip(names, texts)
+
+
 def main():
     pass
 
