@@ -1,4 +1,7 @@
 from flask import Flask, request, render_template, jsonify, Response
+from flask_wtf import Form
+from wtforms import StringField
+from wtforms import validators
 import json
 from build_model import load_model, ClassificationModel
 import requests
@@ -18,9 +21,15 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
+class TweetTextForm(Form):
+    text = StringField(u'Tweet Text', 
+        [validators.required(), validators.length(max=140)])
+
+
 @app.route('/upload', methods=['GET'])
 def show_upload_page():
-    return render_template('upload.html')
+    form = TweetTextForm(csrf_enabled=False)
+    return render_template('upload.html', form=form)
 
 
 @app.route('/unlabeled_tweets', methods=['POST'])
@@ -29,6 +38,7 @@ def label_tweets():
     # Get Tweet Dump out of request, via JSON in Request, Uploaded file, or
     # Form
     uploaded_file_name_value = 'file'
+    form_text_name = 'text'
     if request.headers['Content-Type'] == 'application/json':
         tweets_dump = request.json
 
@@ -37,11 +47,18 @@ def label_tweets():
         if uploaded_file and allowed_file(uploaded_file.filename):
             tweets_dump = json.loads(uploaded_file.stream.read())
 
-    # Predict using classification model
+    # Return {text: label} JSON if Form
+    elif form_text_name in request.form:
+        texts = [request.form[form_text_name]]
+        resp = jsonify(classification_model.predict(texts))
+        resp.status_code = 200
+        return resp
+
+    # Predict using classification model if JSON or Uploaded file
     labeled_tweets_dump = tp.predict_and_append_to_twitter_api_dump_json(
         tweets_dump, 'label', classification_model.predict)
 
-    # Get JSON dump and return the response
+    # Get JSON dump and return the response if JSON or Uploaded file
     resp = jsonify(labeled_tweets_dump)
     resp.status_code = 200
     return resp
