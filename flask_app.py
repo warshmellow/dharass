@@ -26,7 +26,8 @@ def show_upload_page():
 @app.route('/unlabeled_tweets', methods=['POST'])
 def label_tweets():
     "Takes Tweet dump from POST data and returns a Tweet dump with labels"
-    # Get Tweet Dump out of request
+    # Get Tweet Dump out of request, via JSON in Request, Uploaded file, or
+    # Form
     uploaded_file_name_value = 'file'
     if request.headers['Content-Type'] == 'application/json':
         tweets_dump = request.json
