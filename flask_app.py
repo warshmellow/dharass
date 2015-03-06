@@ -58,14 +58,15 @@ def label_tweets():
                 tweets_dump, 'label', classification_model.predict)
             # Pass data to table template and render
             data = tp.get_info_from_twitter_api_dump_json(labeled_tweets_dump)
-            return render_template('table.html', data=data)
+            return render_template('table.html', 
+                data=data, is_empty= len(data) == 0, column_length=3)
 
     # Return {text: label} JSON if Form
     elif form_text_name in request.form:
         texts = [request.form[form_text_name]]
-        resp = jsonify(classification_model.predict(texts))
-        resp.status_code = 200
-        return resp
+        data = classification_model.predict(texts)
+        return render_template('table.html', 
+            data=data, is_empty= len(data) == 0, column_length=2)
 
 
 if __name__ == '__main__':
