@@ -121,3 +121,9 @@ Classification Report for CV Fold
 
 Classification Report on Test Set
           1       0.00      0.00      0.00        27
+
+In fact, trying combinations of Count and TF-IDF, n-gram range 1-3, 
+using stop words, and using Naive Bayes and L1-Logistic Regression, we find
+test and train F1 right around 0.8, with no real difference between any combo!
+We should try more data. We should try spellchecking. Recall, I still can't
+classify "I love chocolate" correctly!
