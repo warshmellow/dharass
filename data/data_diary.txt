@@ -127,3 +127,4 @@ using stop words, and using Naive Bayes and L1-Logistic Regression, we find
 test and train F1 right around 0.8, with no real difference between any combo!
 We should try more data. We should try spellchecking. Recall, I still can't
 classify "I love chocolate" correctly!
+Stick with 1-grams, TF-IDF, and Naive Bayes for now.
