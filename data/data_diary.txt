@@ -28,3 +28,96 @@ See "exploration 3 march 2015.ipynb" for charts. Suggests that the model is
 sensitive up to 5%, in terms of F1-score. After 5%, F1-score increases above
 0.5. And we use F1-score because it is unclear whether precision or recall is
 more important, so let's weight them equally.
+
+March 9, 2015
+If we put an additional requirement on the classifier: we need to remove all screen names, starting with @, we remove all the data about who the tweet was
+sent to, i.e., if it was sent to a particular woman! It is unclear whether this is important. But according to preliminary tests, it is! Cf. the following results.
+Use the same train test data as create_bnb_model_02032015.py, and same random states.
+Tfidf and Multinomial Naive Bayes, keep screen names
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.93      0.87      0.90        30
+          1       1.00      0.70      0.82        30
+          1       0.84      0.78      0.81        27
+          1       0.92      0.71      0.80        34
+          1       0.92      0.77      0.84        31
+
+Classification Report on Test Set
+          1       0.96      0.85      0.90        27
+
+Tfidf and Multinomial Naive Bayes, remove screen names
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.96      0.83      0.89        30
+          1       1.00      0.73      0.85        30
+          1       0.77      0.74      0.75        27
+          1       0.84      0.62      0.71        34
+          1       0.93      0.81      0.86        31
+
+Classification Report on Test Set
+          1       0.69      0.93      0.79        27
+
+Binary Count vectorization and Bernouilli Naive Bayes, remove screen names
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.84      0.90      0.87        30
+          1       0.88      0.77      0.82        30
+          1       0.75      0.89      0.81        27
+          1       0.82      0.91      0.86        34
+          1       0.77      0.87      0.82        31
+
+Classification Report on Test Set
+          1       0.62      0.96      0.75        27
+
+Multinomial Count vectorization and Multinomial Naive Bayes, remove screen names
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.84      0.90      0.87        30
+          1       0.88      0.77      0.82        30
+          1       0.75      0.89      0.81        27
+          1       0.82      0.91      0.86        34
+          1       0.77      0.87      0.82        31
+
+Classification Report on Test Set
+          1       0.62      0.96      0.75        27
+
+Random Forest needs dense matrix, so we shouldn't use it for now.
+
+Tfidf vectorization and L1-reg logistic regression (default otherwise), 
+remove screen
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.90      0.87      0.88        30
+          1       0.77      0.77      0.77        30
+          1       0.86      0.89      0.87        27
+          1       0.84      0.62      0.71        34
+          1       0.88      0.94      0.91        31
+
+Classification Report on Test Set
+          1       0.88      0.78      0.82        27
+
+Tf vectorization (to normalize) and L1-reg logistic regression (default ow),
+remove screen
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.90      0.93      0.92        30
+          1       0.79      0.77      0.78        30
+          1       0.86      0.89      0.87        27
+          1       0.82      0.53      0.64        34
+          1       0.88      0.90      0.89        31
+
+Classification Report on Test Set
+          1       0.80      0.74      0.77        27
+
+Tfidf vectorization and SVM with rbf kernel (default ow), remove screen
+(Abysmal: it can't even find the positive class)
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.00      0.00      0.00        30
+          1       0.00      0.00      0.00        30
+          1       0.00      0.00      0.00        27
+          1       0.00      0.00      0.00        34
+          1       0.00      0.00      0.00        31
+
+Classification Report on Test Set
+          1       0.00      0.00      0.00        27
