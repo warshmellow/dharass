@@ -133,7 +133,9 @@ With a new small dataset (~350) of @femfreq's mentions from March 9, 2015, there
 is about 13% harassment. We are still wondering if it is a rare event for
 her and other women.
 
-We combine the above dataset with previous train_02032015.csv and test on test_02032015.csv. We achieve the following 
+We combine the above dataset with previous train_02032015.csv, into 
+femfreq_mentions03092015_drop_dup_labeled_anon.csv, 
+and test on test_02032015.csv. We achieve the following 
 
 Next steps: 
 Study the examples misclassified by BernoulliNB: BernoulliNB with or without stop words removed is the one to beat
@@ -195,3 +197,89 @@ Classification Report on Test Set
           1       0.92      0.85      0.88        27
 
 Avg CV F1 Score: 0.692000
+
+March 10, 2015
+# Main issues with working with Tweets:
+# 1. harassment vs literally every other topic (and the latter expands across time) 
+# - so need an updating model (online or period batch update)
+# 2. data sparsity - so little data per document so very sensitive to misspellings and appearances of single words. These
+# problems are usually avoided if the text is long enough and has very few misspellings
+# - so try reducing to a large text problem by 1. spelling correction and 2. append large text in "ground truth" source like
+# wikipedia (try titles only?) and 3. use n-grams for n>=1
+
+On training set femfreq_mentions03092015_drop_dup_labeled_anon.csv, 
+run_kfold_and_print_f1_score(X, y, TfidfVectorizer(stop_words='english'), LogisticRegression('l1'), 1, 5, test)
+achieves:
+Avg F1 score: 0.682392
+F1 score on Test Set
+0.826086956522
+
+The same, we use gridsearch to get the following:
+Best estimator:  LogisticRegression(C=100.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, penalty='l1', random_state=None, tol=0.0001)
+Best score:  0.629783869441
+Best params:  {'penalty': 'l1', 'C': 100.0}
+Best estimator:  LogisticRegression(C=10000.0, class_weight=None, dual=False,
+          fit_intercept=True, intercept_scaling=1, penalty='l1',
+          random_state=None, tol=0.0001)
+Best score:  0.658603752661
+Best params:  {'penalty': 'l1', 'C': 10000.0}
+Best estimator:  LogisticRegression(C=100.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, penalty='l1', random_state=None, tol=0.0001)
+Best score:  0.622437024019
+Best params:  {'penalty': 'l1', 'C': 100.0}
+Best estimator:  LogisticRegression(C=100.0, class_weight=None, dual=False, fit_intercept=True,
+          intercept_scaling=1, penalty='l1', random_state=None, tol=0.0001)
+Best score:  0.638024563853
+Best params:  {'penalty': 'l1', 'C': 100.0}
+Best estimator:  LogisticRegression(C=1000.0, class_weight=None, dual=False,
+          fit_intercept=True, intercept_scaling=1, penalty='l1',
+          random_state=None, tol=0.0001)
+Best score:  0.681998731911
+Best params:  {'penalty': 'l1', 'C': 1000.0}
+F1 scores [0.72093023255813959, 0.6470588235294118, 0.71428571428571419, 0.79411764705882348, 0.6913580246913581]
+Avg F1 score: 0.713550
+F1 score on Test Set
+0.909090909091
+
+For linear svm (remove english stopwords, tfidf):
+Best estimator:  LinearSVC(C=10.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='l2', multi_class='ovr', penalty='l2',
+     random_state=None, tol=0.0001, verbose=0)
+Best score:  0.622794724377
+Best params:  {'C': 10.0}
+Best estimator:  LinearSVC(C=100.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='l2', multi_class='ovr', penalty='l2',
+     random_state=None, tol=0.0001, verbose=0)
+Best score:  0.652357692302
+Best params:  {'C': 100.0}
+Best estimator:  LinearSVC(C=10.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='l2', multi_class='ovr', penalty='l2',
+     random_state=None, tol=0.0001, verbose=0)
+Best score:  0.614762832454
+Best params:  {'C': 10.0}
+Best estimator:  LinearSVC(C=100.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='l2', multi_class='ovr', penalty='l2',
+     random_state=None, tol=0.0001, verbose=0)
+Best score:  0.579774335042
+Best params:  {'C': 100.0}
+Best estimator:  LinearSVC(C=10.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='l2', multi_class='ovr', penalty='l2',
+     random_state=None, tol=0.0001, verbose=0)
+Best score:  0.670318460998
+Best params:  {'C': 10.0}
+F1 scores [0.77108433734939752, 0.6470588235294118, 0.74285714285714288, 0.78378378378378377, 0.60526315789473684]
+Avg F1 score: 0.710009
+F1 score on Test Set
+0.872727272727
+
+Multinomial Naive Bayes with CountVectorization, remove english stopwords:
+F1 scores [0.68817204301075263, 0.73972602739726012, 0.73239436619718301, 0.77333333333333343, 0.60240963855421692]
+Avg F1 score: 0.707207
+F1 score on Test Set
+0.821428571429
+
+There doesn't seem to be any significant improvement over the Count Vectorized
+Multinomial NB with removed english stopwords. Since Naive Bayes is the simplest,
+we should stick with that one, and maybe tune Lasso (esp. wrt. Precision-Recall
+and ROC curve), time permitting.
