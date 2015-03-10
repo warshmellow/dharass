@@ -24,7 +24,7 @@ def main():
     collection = db['tweets-dump']
 
     # Get data every time interval and dump into db
-    INTERVAL_SECONDS = 600.0
+    INTERVAL_SECONDS = 3600.0
     start_time = time.time()
     while True:
         print 'Pulling Tweets from Twitter API'

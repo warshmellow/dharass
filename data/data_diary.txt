@@ -128,3 +128,70 @@ test and train F1 right around 0.8, with no real difference between any combo!
 We should try more data. We should try spellchecking. Recall, I still can't
 classify "I love chocolate" correctly!
 Stick with 1-grams, TF-IDF, and Naive Bayes for now.
+
+With a new small dataset (~350) of @femfreq's mentions from March 9, 2015, there
+is about 13% harassment. We are still wondering if it is a rare event for
+her and other women.
+
+We combine the above dataset with previous train_02032015.csv and test on test_02032015.csv. We achieve the following 
+
+Next steps: 
+Study the examples misclassified by BernoulliNB: BernoulliNB with or without stop words removed is the one to beat
+Lasso Logistic Regression and Linear SVM both with stop words removed seem promising too.
+Try tuning their complexity parameters.
+Counts and MultinomialNB, anonymized.
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.76      0.62      0.68        47
+          1       0.81      0.74      0.78        35
+          1       0.75      0.82      0.78        33
+          1       0.82      0.82      0.82        38
+          1       0.68      0.58      0.63        45
+
+Classification Report on Test Set
+          1       0.85      0.85      0.85        27
+
+Avg CV F1 Score: 0.738000 
+
+Counts, remove stopwords, MultinomialNB, anonymized.
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.70      0.68      0.69        47
+          1       0.74      0.80      0.77        35
+          1       0.68      0.79      0.73        33
+          1       0.78      0.76      0.77        38
+          1       0.66      0.56      0.60        45
+
+Classification Report on Test Set
+          1       0.79      0.85      0.82        27
+
+Avg CV F1 Score: 0.738000
+
+Tfidf, remove stopwords, L1-Logistic Regression (default), anonymized
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.95      0.45      0.61        47
+          1       0.95      0.54      0.69        35
+          1       0.95      0.64      0.76        33
+          1       1.00      0.58      0.73        38
+          1       1.00      0.44      0.62        45
+
+Classification Report on Test Set
+             precision    recall  f1-score   support
+          1       1.00      0.70      0.83        27
+
+Avg CV F1 Score: 0.682000
+
+Tfidf, remove stopwords, Linear SVM (default), anonymized
+Classification Report for CV Fold
+             precision    recall  f1-score   support
+          1       0.87      0.57      0.69        47
+          1       0.81      0.60      0.69        35
+          1       0.75      0.73      0.74        33
+          1       0.93      0.66      0.77        38
+          1       0.80      0.44      0.57        45
+
+Classification Report on Test Set
+          1       0.92      0.85      0.88        27
+
+Avg CV F1 Score: 0.692000
