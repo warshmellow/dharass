@@ -18,3 +18,9 @@ create_train_test_02032015.py.
 create_bnb_model_02032015.py generates a Bernoulli Naive Bayes model using
 train_02032015.csv as training set, binary count vectorization, and no
 preprocessing of text.
+
+femfreq_mentions03092015_drop_dup_labeled_anon.csv contains about 350 unique 
+tweets pulled from @femfreq's mentions during 2 hours on March 9, 2015. They
+have been labeled for gendered harassment by the development team. They contain
+only text and label, and each text has been stripped of all screen names, i.e.,
+of all @--- names.
