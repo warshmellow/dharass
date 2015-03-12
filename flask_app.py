@@ -35,11 +35,6 @@ def show_index():
     return render_template('index.html', form=form)
 
 
-# @app.route('/upload', methods=['GET'])
-# def show_upload_page():
-#     return render_template('upload.html', form=form)
-
-
 @app.route('/unlabeled_tweets', methods=['POST'])
 def label_tweets():
     "Takes Tweet dump from POST data and returns a Tweet dump with labels"

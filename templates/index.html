@@ -155,7 +155,13 @@ data-spy="scroll"
             
             <div class="block">
                 <h3 class="sub-title text-center">Write your own message</h3>
-                <p>Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Lorem ipsum dolor sit amet, consectetuer adipiscing elit ligula eget dolor.</p>
+                <form class="form-inline" method="POST" action="/unlabeled_tweets">
+                    <div class="form-group">
+                        {{ form.hidden_tag() }}
+                        {{ form.text(size=80, class_='form-control') }}
+                    </div>
+                    <input class="btn btn-cta-primary" type="submit" value="Go">
+                </form>
             </div><!--//block-->   
             <div class="block">
                 <p class="text-center">
