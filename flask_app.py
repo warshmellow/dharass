@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify, Response
 from flask_wtf import Form
+from flask_bootstrap import Bootstrap
 from wtforms import StringField
 from wtforms import validators
 import json
@@ -16,14 +17,21 @@ app = Flask(__name__)
 PORT = 5353
 ALLOWED_EXTENSIONS = set(['json'])
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 class TweetTextForm(Form):
-    text = StringField(u'Tweet Text', 
+    text = StringField(
+        u'Tweet Text',
         [validators.required(), validators.length(max=140)])
+
+
+@app.route('/', methods=['GET'])
+def show_index():
+    return render_template('index.html')
 
 
 @app.route('/upload', methods=['GET'])
@@ -43,7 +51,7 @@ def label_tweets():
         tweets_dump = request.json
         # Predict using classification model
         labeled_tweets_dump = tp.predict_and_append_to_twitter_api_dump_json(
-        tweets_dump, 'label', classification_model.predict)
+            tweets_dump, 'label', classification_model.predict)
         # JSONify and return
         resp = jsonify(labeled_tweets_dump)
         resp.status_code = 200
@@ -58,19 +66,27 @@ def label_tweets():
                 tweets_dump, 'label', classification_model.predict)
             # Pass data to table template and render
             data = tp.get_info_from_twitter_api_dump_json(labeled_tweets_dump)
-            return render_template('table.html', 
-                data=data, is_empty= len(data) == 0, column_length=3)
+            return render_template(
+                'table.html',
+                data=data,
+                is_empty=(len(data) == 0),
+                column_length=3)
 
     # Return {text: label} JSON if Form
     elif form_text_name in request.form:
         texts = [request.form[form_text_name]]
         data = classification_model.predict(texts)
-        return render_template('table.html', 
-            data=data, is_empty= len(data) == 0, column_length=2)
+        return render_template(
+            'table.html',
+            data=data,
+            is_empty=(len(data) == 0),
+            column_length=2)
 
 
 if __name__ == '__main__':
     # Load model
     classification_model = load_model('model.pkl')
+    # Load Bootstrap
+    Bootstrap(app)
     # Start Flask app
     app.run(host='0.0.0.0', port=PORT, debug=True)

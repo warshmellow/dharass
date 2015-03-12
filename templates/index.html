@@ -1,35 +1,22 @@
-<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
-<head>
-    <title>Free Bootstrap Theme for Developers</title>
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">    
-    <link rel="shortcut icon" href="favicon.ico">  
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'> 
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
-    <!-- Plugins CSS -->    
-    <link rel="stylesheet" href="assets/plugins/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="assets/plugins/prism/prism.css">
-    <!-- Theme CSS -->  
-    <link id="theme-style" rel="stylesheet" href="assets/css/styles.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head> 
+{% extends "bootstrap/base.html" %}
+{% block title %}dHarass - A tool to get nasty gendered harassment out of your Twitter mentions{% endblock %}
 
-<body data-spy="scroll">
-    
-    <!-- ******HEADER****** --> 
+{% block styles %}
+{{ super() }}
+<link rel="shortcut icon" href="favicon.ico">
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'> 
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link id="theme-style" rel="stylesheet" href="static/css/styles.css">
+
+{% endblock %}
+
+{% block body_attribs %}
+data-spy="scroll"
+{% endblock %}
+
+{% block navbar %}
+<!-- ******HEADER****** --> 
     <header id="header" class="header">  
         <div class="container">            
             <h1 class="logo pull-left">
@@ -57,8 +44,10 @@
             </nav><!--//main-nav-->
         </div>
     </header><!--//header-->
-    
-    <!-- ******PROMO****** -->
+{% endblock %}
+
+{% block content %}
+<!-- ******PROMO****** -->
     <section id="promo" class="promo section offset-header">
         <div class="container text-center">
             <h2 class="title">d<span class="highlight">Harass</span></h2>
@@ -73,8 +62,8 @@
             </ul><!--//meta-->
         </div><!--//container-->
     </section><!--//promo-->
-    
-    <!-- ******ABOUT****** --> 
+
+        <!-- ******ABOUT****** --> 
     <section id="about" class="about section">
         <div class="container">
             <h2 class="title text-center">What is dHarass?</h2>
@@ -142,8 +131,7 @@
             </div><!--//row-->            
         </div><!--//container-->
     </section><!--//about-->
-    
-    <!-- ******DOCS****** --> 
+
     <section id="try" class="docs section">
         <div class="container">
             <div class="docs-inner">
@@ -172,8 +160,7 @@
             </div><!--//docs-inner-->         
         </div><!--//container-->
     </section><!--//features-->
-    
-    
+
     <!-- ******CONTACT****** --> 
     <section id="contact" class="contact section has-pattern">
         <div class="container">
@@ -182,7 +169,6 @@
                 <p class="intro  text-center">I hope you find this Bootstrap template useful. <br />Feel free to get in touch if you have any questions or suggestions.</p>
                 <div class="author-message">                      
                     <div class="profile">
-                        <img class="img-responsive" src="assets/images/profile.png" alt="" />
                     </div><!--//profile-->
                     <div class="speech-bubble">
                         <h3 class="sub-title">Want to get more freebies in the future?</h3>
@@ -218,15 +204,17 @@
             <small class="copyright">Designed with <i class="fa fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
         </div><!--//container-->
     </footer><!--//footer-->
-     
-    <!-- Javascript -->          
-    <script type="text/javascript" src="assets/plugins/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/jquery-migrate-1.2.1.min.js"></script>    
-    <script type="text/javascript" src="assets/plugins/jquery.easing.1.3.js"></script>   
-    <script type="text/javascript" src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>     
-    <script type="text/javascript" src="assets/plugins/jquery-scrollTo/jquery.scrollTo.min.js"></script> 
-    <script type="text/javascript" src="assets/plugins/prism/prism.js"></script>    
-    <script type="text/javascript" src="assets/js/main.js"></script>       
-</body>
-</html> 
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/1.4.14/jquery.scrollTo.min.js"></script>
+    <script type="text/javascript" src="static/js/prism.js"></script>    
+    <script type="text/javascript" src="static/js/main.js"></script> 
+{% endblock %}
+
+
+
 
