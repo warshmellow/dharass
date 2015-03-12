@@ -1,0 +1,13 @@
+<!doctype html>
+<h1>Type a Message</h1>
+<form method="POST" action="/unlabeled_tweets">
+    {{ form.hidden_tag() }}
+    {{ form.text.label }} {{ form.text(size=20) }}
+    <input type="submit" value="Go">
+</form>
+
+<h1>Upload new File</h1>
+<form action="/unlabeled_tweets" method=post enctype=multipart/form-data>
+  <p><input type=file name=file>
+     <input type=submit value=Upload>
+</form>

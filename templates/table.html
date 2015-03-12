@@ -1,0 +1,94 @@
+<html>
+<head>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+<!-- https://datatables.net/examples/styling/bootstrap.html -->
+
+<link rel="stylesheet" type="text/css" href=
+"//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.3/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<style type="text/css" class="init">
+body { font-size: 140%; }
+</style>
+    <title></title>
+</head>
+<body>
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flasky</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% block content %}
+{% if is_empty %}
+{% elif column_length == 2 %}
+<div style='margin:2%'>
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>text</th>
+                <th>contains_harassment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for text, label in data %}
+            <tr>
+                <td>{{ text }}</td>
+                <td>{{ label }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% elif column_length == 3 %}
+<div style='margin:2%'>
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>text</th>
+                <th>contains_harassment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for screen_name, text, label in data %}
+            <tr>
+                <td>{{ screen_name }}</td>
+                <td>{{ text }}</td>
+                <td>{{ label }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}                                   
+{% endblock %}
+</body>
+</html>
+<script>
+$(document).ready(function() {
+    $('#example').dataTable();
+} );
+</script>
