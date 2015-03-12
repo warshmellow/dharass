@@ -31,13 +31,13 @@ class TweetTextForm(Form):
 
 @app.route('/', methods=['GET'])
 def show_index():
-    return render_template('index.html')
-
-
-@app.route('/upload', methods=['GET'])
-def show_upload_page():
     form = TweetTextForm(csrf_enabled=False)
-    return render_template('upload.html', form=form)
+    return render_template('index.html', form=form)
+
+
+# @app.route('/upload', methods=['GET'])
+# def show_upload_page():
+#     return render_template('upload.html', form=form)
 
 
 @app.route('/unlabeled_tweets', methods=['POST'])
