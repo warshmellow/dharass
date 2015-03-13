@@ -2,11 +2,11 @@
 Trains and pickles the classifier (model) used for the app.
 
 The one below is a Multinomial Naive Bayes model that takes a the file
-train_02032015.csv, and does English stopword removal, only direct 
+train_02032015.csv, and does English stopword removal, only direct
 count vectorization.
 
 The classification model expects the tweets to be classified as a list of
-strings.
+strings. It removes screen names before training and predicting.
 '''
 
 import numpy as np
@@ -16,6 +16,7 @@ from sklearn.naive_bayes import BernoulliNB, MultinomialNB
 from sklearn.metrics import classification_report
 from sklearn.cross_validation import KFold
 import cPickle as pickle
+import re
 
 
 class ClassificationModel():
@@ -36,9 +37,10 @@ class ClassificationModel():
         Takes test_data which is a list of strings and
         returns a list [(test point, label)]
         '''
-        # Preprocess text if needed
+        # Preprocess text by removing screen names
+        anon_test_data = [re.sub(r'\@\w+', '', text) for text in test_data]
         # Vectorize
-        test_data_vectorized = self.vectorizer.transform(test_data)
+        test_data_vectorized = self.vectorizer.transform(anon_test_data)
         # Predict using saved model
         labels = self.model.predict(test_data_vectorized)
         # return list of (data point, label)
@@ -62,8 +64,13 @@ def load_model(filename):
 
 
 if __name__ == '__main__':
+    # Load training set
     X, y = get_data('data/train_03102015.csv')
+    # Anonymize training set by removing screen names
+    X = np.vectorize(lambda string: re.sub(r'\@\w+', '', string))(X)
+    # Train model
     model = ClassificationModel()
     model.fit(X, y)
+    # Save to model.pkl
     with open('model.pkl', 'w') as f:
         pickle.dump(model, f)
