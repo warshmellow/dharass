@@ -11,16 +11,31 @@ import time
 import tweet_processing as tp
 from werkzeug import secure_filename
 import ipdb
+import twitter
 
 
 app = Flask(__name__)
 PORT = 5353
 ALLOWED_EXTENSIONS = set(['json'])
 
+# Connect to Twitter API (Application Level Auth)
+with open('twitter_app_keys.txt') as f:
+    keys = tuple([line.rstrip() for line in list(f)])
+CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET = keys
+
+api = twitter.Api(consumer_key=CONSUMER_KEY,
+                  consumer_secret=CONSUMER_SECRET,
+                  access_token_key=ACCESS_TOKEN,
+                  access_token_secret=ACCESS_TOKEN_SECRET)
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+class TwitterScreeNameForm(Form):
+    screen_name = StringField(u'Screen Name', [validators.required()])
 
 
 class TweetTextForm(Form):
@@ -31,17 +46,23 @@ class TweetTextForm(Form):
 
 @app.route('/', methods=['GET'])
 def show_index():
-    form = TweetTextForm(csrf_enabled=False)
-    return render_template('index.html', form=form)
+    screen_name_form = TwitterScreeNameForm(csrf_enabled=False)
+    message_form = TweetTextForm(csrf_enabled=False)
+    return render_template(
+        'index.html',
+        screen_name_form=screen_name_form,
+        message_form=message_form)
 
 
 @app.route('/unlabeled_tweets', methods=['POST'])
 def label_tweets():
     "Takes Tweet dump from POST data and returns a Tweet dump with labels"
-    # Get Tweet Dump out of request, via JSON in Request, Uploaded file, or
-    # Form
+    # Get Tweet Dump out of request, via JSON in Request, Uploaded file,
+    # Message Form or Screen Name Form
     uploaded_file_name_value = 'file'
-    form_text_name = 'text'
+    message_form_text_name = 'text'
+    screen_name_form_name = 'screen_name'
+    # JSON in Request
     if request.headers['Content-Type'] == 'application/json':
         tweets_dump = request.json
         # Predict using classification model
@@ -52,6 +73,7 @@ def label_tweets():
         resp.status_code = 200
         return resp
 
+    # Uploaded file
     elif uploaded_file_name_value in request.files:
         uploaded_file = request.files[uploaded_file_name_value]
         if uploaded_file and allowed_file(uploaded_file.filename):
@@ -67,8 +89,8 @@ def label_tweets():
                 is_empty=(len(data) == 0),
                 column_length=3)
 
-    # Return {text: label} JSON if Form
-    elif form_text_name in request.form:
+    # Message Form
+    elif message_form_text_name in request.form:
         texts = [request.form[form_text_name]]
         data = classification_model.predict(texts)
         return render_template(
@@ -76,6 +98,27 @@ def label_tweets():
             data=data,
             is_empty=(len(data) == 0),
             column_length=2)
+
+    # Screen Name Form
+    elif screen_name_form_name in request.form:
+        # Construct query by '@' + inputed screen name
+        term = '@' + request.form[screen_name_form_name]
+        # Execute search and get results
+        raw_screen_name_mentions = api.GetSearch(
+            term=term,
+            lang='en',
+            result_type='recent',
+            count=100)
+        # Predict on search results and render template
+        data = tp.apply_to_text_of_twitter_api_query(
+            raw_screen_name_mentions,
+            [classification_model.predict,
+            lambda lst: map(lambda x: x[1], lst)])
+        return render_template(
+            'table.html',
+            data=data,
+            is_empty=(len(data) == 0),
+            column_length=3)
 
 
 if __name__ == '__main__':

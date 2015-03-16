@@ -86,6 +86,17 @@ def get_info_from_twitter_api_dump_json(tweets_dump):
         return zip(names, texts)
 
 
+def apply_to_text_of_twitter_api_query(statuses, funcs):
+    'Apply functions in order to statuses texts and get back names, texts, results'
+    statuses_as_dicts = [status.AsDict() for status in statuses]
+    names = [status['user']['screen_name'] for status in statuses_as_dicts]
+    texts = [status['text'] for status in statuses_as_dicts]
+    results = texts
+    for f in funcs:
+        results = f(results)
+    return zip(names, texts, results)
+
+
 def main():
     pass
 

@@ -136,8 +136,15 @@ data-spy="scroll"
             <div class="docs-inner">
             <h2 class="title text-center">Try Me</h2>            
             <div class="block">
-                <h3 class="sub-title text-center">Sign In with Twitter and Check Mentions</h3>
-                <p>Sign in and click 'Check Mentions'</p>
+                <h3 class="sub-title text-center">Check Your Mentions</h3>
+                <p>Enter your Twitter handle and check your latest mentions</p>
+                <form class="form-inline" method="POST" action="/unlabeled_tweets">
+                    <div class="form-group">
+                        {{ screen_name_form.hidden_tag() }}
+                        @{{ screen_name_form.screen_name(size=20, class_='form-control') }}
+                    </div>
+                    <input class="btn btn-cta-primary" type="submit" value="Go">
+                </form>
             </div><!--//block-->
             
             <div class="block">
@@ -156,8 +163,8 @@ data-spy="scroll"
                 <h3 class="sub-title text-center">Write your own message</h3>
                 <form class="form-inline" method="POST" action="/unlabeled_tweets">
                     <div class="form-group">
-                        {{ form.hidden_tag() }}
-                        {{ form.text(size=80, class_='form-control') }}
+                        {{ message_form.hidden_tag() }}
+                        {{ message_form.text(size=80, class_='form-control') }}
                     </div>
                     <input class="btn btn-cta-primary" type="submit" value="Go">
                 </form>
