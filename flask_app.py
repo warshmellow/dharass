@@ -91,7 +91,7 @@ def label_tweets():
 
     # Message Form
     elif message_form_text_name in request.form:
-        texts = [request.form[form_text_name]]
+        texts = [request.form[message_form_text_name]]
         data = classification_model.predict(texts)
         return render_template(
             'table.html',
