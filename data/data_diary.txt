@@ -387,7 +387,53 @@ It's like 1-2 point (out of 100) improvement, which is prolly not noticeable to 
 
 This seems a bit similar, maybe it will help you just to see their results http://cs229.stanford.edu/proj2011/BovalTobin-FlameWarDetectionUsingNaiveBayes.pdf
 
-From this paper, it seems like the main idea on improvements, in the paper, are that 1. moar data + semi-supervised techniques improves the model the best 2. frequency estimate extension, spelling correction, stemming, and correlating length of discussion were useless.
+From this paper, it seems like the main idea on improvements, in the paper, are that 1. moar data improves the model the best 2. frequency estimate extension (a semi-supervised technique), spelling correction, stemming, and correlating length of discussion were useless.
 
 For now, we can leave the model as is, and build a user "hot" word/phrase model,
 and roll in a semi-supervised NB.
+
+March 17, 2015
+We train a Multinomial Naive Bayes Model with labeled and unlabeled data, (remove stop words) train_03102015.csv and a full dump of unique tweets from the database (collected March 10 to March 17 from @femfreq's mentions). This full dump is 1994 unique tweets (discounting RT). We use OpenPR-NBEM semi supervised library from Rui Xia (http://msrt.njust.edu.cn/staff/rxia/). We take metrics
+on test file test_03102015.csv.
+
+The command and output is:
+./nbem_ssl ../labeled_train_03102015.samp ../unlabeled_full_dump.samp nbem_ssl_train_03102015.mod
+Loading training data...
+Loading unlabeled data...
+
+EM learning...
+Initial loglikelihood: -150581
+
+Iter: 1
+Loglikelihood: -145077, increasing 0.0365506
+
+Iter: 2
+Loglikelihood: -144773, increasing 0.0020932
+
+Iter: 3
+Loglikelihood: -144656, increasing 0.000809128
+
+Iter: 4
+Loglikelihood: -144608, increasing 0.000332178
+
+Iter: 5
+Loglikelihood: -144586, increasing 0.000154132
+
+Iter: 6
+Loglikelihood: -144575, increasing 7.70549e-05
+Reach convergence!
+Saving model...
+
+./nb_classify ../labeled_test_03102015.samp nbem_ssl_train_03102015.mod ../test_03102015_pred.txt
+Loading model...
+Classifying test file...
+Accuracy: 0.880435
+
+ precision    recall  f1-score   support
+          1       0.81      0.78      0.79        27
+
+This training doesn't seem to improve it that much. Oh well. Maybe more data?
+
+On the training data set:
+             precision    recall  f1-score   support
+          1       0.98      0.84      0.90       198
