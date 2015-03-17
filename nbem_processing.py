@@ -58,3 +58,19 @@ def convert_vectorized_to_printable_rows(X, y=None):
         for row_num, result in enumerate(results):
             rows.append(format_nonzero_row(result, y[row_num], label_shift=1))
     return rows
+
+
+def print_printable_rows_to_file(rows, filename, header=None):
+    'Prints printable rows to file, prefacing with header'
+    with open(filename, 'w') as f:
+        if header:
+            f.write(header + '\n')
+        for row in rows:
+            f.write(row + '\n')
+
+
+def print_vectorized_to_file(filename, X, y=None, header=None):
+    # Convert vectorized X to printable rows
+    # Then print to file
+    print_printable_rows_to_file(
+        convert_vectorized_to_printable_rows(X, y), filename, header)
