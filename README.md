@@ -2,6 +2,8 @@
 
 ## A tool to get nasty gendered harassment out of your Twitter mentions
 
+### David Chen for Zipfian Academy, Winter 2015
+
 ## How to Use
 1. In the project directory, type **python build_model.py** to build the model.
 1. Type **python flask_app.py** to run the app.
