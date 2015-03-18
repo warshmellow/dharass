@@ -1,4 +1,4 @@
-# [dHarass](www.dharass.com)
+# [dHarass](http://www.dharass.com)
 
 ## A tool to get nasty gendered harassment out of your Twitter mentions
 
