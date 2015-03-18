@@ -83,3 +83,9 @@ Toolkit + Credits:
 3. Flask
 4. Scikit-learn
 5. OpenPR-NBEM
+
+Glossary of Terms:
+Sparse matrix
+Bag of Words
+Semi-supervised learning
+Naive bayes
