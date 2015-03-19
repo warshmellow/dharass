@@ -1,12 +1,21 @@
+'''
+Contains some processing code to data from scikit-learn matrices to
+work with OpenPR-NBEM, Naive Bayes Expectation Maximization library
+'''
+
 import ipdb
 import numpy as np
 import itertools
 
 
 def get_nonzero_indices_and_counts(X, shift=0):
+    '''
+    Takes sparse matrix and returns list, where each list is either
+    empty or contains the pairs (index + shift, count)
+    '''
     # Convert to CSR matrix format and Sort indices
     X = X.tocsr().sorted_indices()
-    
+
     # Get nonzero entries
     nonzero_row_cols = zip(*X.nonzero())
 
@@ -17,18 +26,22 @@ def get_nonzero_indices_and_counts(X, shift=0):
         while i < k:
             result.append([])
             i += 1
-    
+
         nonzero_idx = np.array(sorted(map(lambda x: x[1], list(items))))
         nonzero_entries = np.array(X[k][X[k] != 0])[0]
         idx_count_lst = zip(nonzero_idx + shift, nonzero_entries)
         result.append(idx_count_lst)
-        
+
         i += 1
     # Return list
     return result
 
 
-def format_nonzero_row(nonzero_entries, label=None, label_shift=0, default_missing_label=0):
+def format_nonzero_row(nonzero_entries,
+                       label=None,
+                       label_shift=0,
+                       default_missing_label=0):
+    'Format output of get_nonzero_indices_and_counts to be printable row'
     lst_of_terms = []
     if label is None:
         lst_of_terms.append(str(default_missing_label))
@@ -43,7 +56,7 @@ def format_nonzero_row(nonzero_entries, label=None, label_shift=0, default_missi
 
 def convert_vectorized_to_printable_rows(X, y=None):
     '''
-    Takes vectorized (sparse) matrix and labels, 
+    Takes vectorized (sparse) matrix and labels,
     and returns list of formatted strings of rows for NBEM.
     If missing labels, then label will be 0
     '''
