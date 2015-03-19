@@ -116,7 +116,7 @@ def label_tweets():
             data = tp.apply_to_text_of_twitter_api_query(
                 raw_screen_name_mentions,
                 [classification_model.predict,
-                lambda lst: map(lambda x: x[1], lst)])
+                    lambda lst: map(lambda x: x[1], lst)])
         return render_template(
             'table.html',
             data=data,
