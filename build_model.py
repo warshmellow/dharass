@@ -37,6 +37,9 @@ class ClassificationModel():
         Takes test_data which is a list of strings and
         returns a list [(test point, label)]
         '''
+        # If test_data is empty, return []
+        if len(test_data) == 0:
+            return []
         # Preprocess text by removing screen names
         anon_test_data = [re.sub(r'\@\w+', '', text) for text in test_data]
         # Vectorize
