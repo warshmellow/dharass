@@ -45,11 +45,11 @@ def get_statuses_in_order_from_twitter_api_dump_json_file(filename):
 
 def apply_and_append_to_twitter_api_dump_json(tweets_dump, key_name, funcs):
     '''
-    Applies f in funcs to tweet_dump (following iterator order) 
+    Applies f in funcs to tweet_dump (following iterator order)
     then returns a copy of tweet_dump, storing the result as the value
     associated to key_name.
-    
-    e.g. with tweet_dump, 'labels', [predict], returns copy of tweet_dump with 
+
+    e.g. with tweet_dump, 'labels', [predict], returns copy of tweet_dump with
     tweet_dump['labels'] = predict(tweet_dump)
     '''
     result = tweets_dump
@@ -60,15 +60,16 @@ def apply_and_append_to_twitter_api_dump_json(tweets_dump, key_name, funcs):
     return modified_copy
 
 
-def predict_and_append_to_twitter_api_dump_json(tweets_dump, label_name, 
-    predict_func):
+def predict_and_append_to_twitter_api_dump_json(tweets_dump,
+                                                label_name,
+                                                predict_func):
     '''
     Takes a tweets dump and returns a copy with the result of calling
     predict_func (a prediction function like a classifier) stored with the
     key label_name
     '''
     return apply_and_append_to_twitter_api_dump_json(
-        tweets_dump, 
+        tweets_dump,
         label_name, [
             get_text_in_order_from_twitter_api_dump_json,
             predict_func,
@@ -77,7 +78,10 @@ def predict_and_append_to_twitter_api_dump_json(tweets_dump, label_name,
 
 def get_info_from_twitter_api_dump_json(tweets_dump):
     'Returns screen name, text, and label if label exists'
-    names = [status['user']['screen_name'] for status in tweets_dump['statuses']]
+    names = [
+        status['user']['screen_name']
+        for status
+        in tweets_dump['statuses']]
     texts = [status['text'] for status in tweets_dump['statuses']]
 
     if 'label' in tweets_dump:
@@ -87,7 +91,10 @@ def get_info_from_twitter_api_dump_json(tweets_dump):
 
 
 def apply_to_text_of_twitter_api_query(statuses, funcs):
-    'Apply functions in order to statuses texts and get back names, texts, results'
+    '''
+    Apply functions in order to statuses texts and get back names,
+    texts, results
+    '''
     statuses_as_dicts = [status.AsDict() for status in statuses]
     names = [status['user']['screen_name'] for status in statuses_as_dicts]
     texts = [status['text'] for status in statuses_as_dicts]
