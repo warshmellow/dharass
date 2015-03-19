@@ -31,12 +31,7 @@ body { font-size: 140%; }
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Flasky</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-            </ul>
+            <a class="navbar-brand" href="/">dHarass</a>
         </div>
     </div>
 </div>
@@ -45,6 +40,11 @@ body { font-size: 140%; }
 {% if is_empty %}
 {% elif column_length == 2 %}
 <div style='margin:2%'>
+    <!-- Indicates a dangerous or potentially negative action -->
+    <div class="text-center">
+    <button type="button" class="btn btn-danger">Block All Nasty Users</button>
+    [This doesn't work yet]
+    </div>
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -64,6 +64,11 @@ body { font-size: 140%; }
 </div>
 {% elif column_length == 3 %}
 <div style='margin:2%'>
+    <!-- Indicates a dangerous or potentially negative action -->
+    <div class="text-center">
+    <button type="button" class="btn btn-danger">Block All Nasty Users</button>
+    [This doesn't work yet]
+    </div>
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
             <tr>
