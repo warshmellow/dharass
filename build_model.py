@@ -2,7 +2,7 @@
 Trains and pickles the classifier (model) used for the app.
 
 The one below is a Multinomial Naive Bayes model that takes a the file
-train_02032015.csv, and does English stopword removal, only direct
+train_03102015.csv, and does English stopword removal, only direct
 count vectorization.
 
 The classification model expects the tweets to be classified as a list of
