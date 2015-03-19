@@ -101,19 +101,22 @@ def label_tweets():
 
     # Screen Name Form
     elif screen_name_form_name in request.form:
-        # Construct query by '@' + inputed screen name
-        term = '@' + request.form[screen_name_form_name]
-        # Execute search and get results
-        raw_screen_name_mentions = api.GetSearch(
-            term=term,
-            lang='en',
-            result_type='recent',
-            count=100)
-        # Predict on search results and render template
-        data = tp.apply_to_text_of_twitter_api_query(
-            raw_screen_name_mentions,
-            [classification_model.predict,
-            lambda lst: map(lambda x: x[1], lst)])
+        if request.form[screen_name_form_name] == '':
+            data = []
+        else:
+            # Construct query by '@' + inputed screen name
+            term = '@' + request.form[screen_name_form_name]
+            # Execute search and get results
+            raw_screen_name_mentions = api.GetSearch(
+                term=term,
+                lang='en',
+                result_type='recent',
+                count=100)
+            # Predict on search results and render template
+            data = tp.apply_to_text_of_twitter_api_query(
+                raw_screen_name_mentions,
+                [classification_model.predict,
+                lambda lst: map(lambda x: x[1], lst)])
         return render_template(
             'table.html',
             data=data,
